@@ -1,0 +1,161 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img
+        {
+            width: 100px;
+            height: 70px;
+        }
+        .video
+        {
+            background: rgba(144, 144, 144,0.1);
+            border-radius: 20px;
+            width: fit-content;
+            margin-bottom: 10px;
+            border:none;
+        }
+        .projects{
+           display: grid;
+           grid-template-columns: auto auto;
+        }
+        .gimg{    
+         width:85%;
+         height:85%;
+         background: linear-gradient(to right top,#00a1ff,#00ff8f);
+        }
+        .himg{    
+         width:85%;
+         height:85%;
+         background: linear-gradient(to right top,#fbb040,#f9ed32);
+        }
+        .cimg{    
+         width:85%;
+         height:85%;
+         background: linear-gradient(to right top,#e100ff,#7100ff);
+        }
+        .jimg{    
+         width:85%;
+         height:85%;
+         background: linear-gradient(to right top,#2d388a,#00aeef);
+        }
+        .pimg{    
+         width:85%;
+         height:85%;
+         background: linear-gradient(to right top,#2d388a,#00aeef);
+        }
+        .mbh1{
+           padding-top: 5px;
+           padding-bottom: 5px;
+           width: 85%;
+
+        }
+        .top{
+           width: 100%;
+        }
+        #back{
+         font-size:xx-large;
+         width: 150px; 
+        }
+        @media screen and (max-width:500px) {
+         .gimg{
+width:90%;
+height:60%;
+}
+.pimg{
+width:90%;
+height:60%;
+}
+.himg{
+width:90%;
+height:60%;
+}
+.mbh1{
+   width: 90%;
+   font-size: larger;
+}
+#back{
+         font-size:x-large; 
+         width: 75px;
+        }
+.top{
+           width: 100%;
+        }
+        }
+        
+    </style>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+  
+  
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+    apiKey: "AIzaSyAuvlQF0Qdgk7HtqII4d_cuwoRVoIA58IY",
+    authDomain: "codeit1.firebaseapp.com",
+    projectId: "codeit1",
+    storageBucket: "codeit1.appspot.com",
+    messagingSenderId: "1438261598",
+    appId: "1:1438261598:web:619819c205db246e512fcf"
+  };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+<body>
+   <h1 class="mbh1 top">Here Are Our HTML Projects: </h1>
+
+   <div id="videos" style="margin-top:-10px;"></div>
+
+   <button id="back" onclick="window.close()" style="border: none;background:#00a1ff;box-shadow: 2px 2px 5px #00aeef;text-align: left;">🔙</button>
+
+   <script>
+   var vids=0;
+   var vid = "";
+       var database = firebase.database()
+       database.ref("Videos/Vids").on('value',
+       function(data){
+vids=data.val()
+       }
+       )
+       int1=setInterval(function(){
+        document.getElementById("videos").innerHTML=""
+        for(var i=1;i<=vids;i++){
+       database.ref("Vid"+i+"/name").on('value',function(data){
+          vid=i+". <label style='font-family:helevetica;color:black;font-weight:700px;'>"+data.val()+"</label><br><br>"
+           
+       })
+       database.ref("Vid"+i+"/image").on('value',function(data){
+          vid+="<img style='margin-top:-10px;margin-left:15px;border:2.5px solid black;' src='"+data.val()+"'>"
+       })
+       database.ref("Vid"+i+"/desc").on('value',function(data){
+          vid+="<label style='margin-left:10px;margin-top:-70px;'>"+data.val()+"</label>"
+       })
+       database.ref("Vid"+i+"/url").on('value',function(data){
+          vid+="<br><br><br><button style='margin-top:-30px;margin-left:12.5px;background:#0da2ff;border:none;padding:5px;padding-right:10px;padding-left:10px;border-radius:15px'><a href='"+data.val()+"'target=blank style='text-decoration:none;color:white;font-weight:700px;font-size:17px;font-family:helevetica;'>Watch Video</a></button>"
+       })
+       database.ref("Vid"+i+"/cat").on('value',function(data){
+           if(data.val()==="html"){
+        document.getElementById("videos").innerHTML+="<div class='video' onclick=openvd("+(i)+") style='border:2px solid black;padding: 10px;'>"+vid+"</div>"
+       }
+    })
+       }
+       },100)
+       setTimeout(function(){
+           clearInterval(int1)
+       }
+       ,5000)
+      function openvd(n)
+      {
+         window.open('video.html?vd='+n)
+      }
+   </script>
+</body>
+</html>

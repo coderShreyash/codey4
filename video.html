@@ -1,0 +1,109 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      img{
+          width:60%;
+          height:60%;
+
+      }
+      .video{
+          text-align: center;
+      }
+    
+        @media screen and (max-width:600px) {
+           img{
+               width:80%;
+               height:35%
+           }
+        }
+    </style>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+  
+  
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+    apiKey: "AIzaSyAuvlQF0Qdgk7HtqII4d_cuwoRVoIA58IY",
+    authDomain: "codeit1.firebaseapp.com",
+    projectId: "codeit1",
+    storageBucket: "codeit1.appspot.com",
+    messagingSenderId: "1438261598",
+    appId: "1:1438261598:web:619819c205db246e512fcf"
+  };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+<body>
+   <div id="videos" style="margin-top:-10px"></div>
+  
+   <script>
+   var vids=0;
+   var vid = "";
+   var i = location.search.slice(4);
+       var database = firebase.database()
+       database.ref("Videos/Vids").on('value',
+       function(data){
+vids=data.val()
+       }
+       )
+       
+       int1=setInterval(function(){
+        document.getElementById("videos").innerHTML=""
+        
+       database.ref("Vid"+i+"/name").on('value',function(data){
+          vid="<h1 style='margin-top:20px;font-family:helevetica;color:black;font-weight:700px;'>"+data.val()+"</h1>"
+           
+       })
+       database.ref("Vid"+i+"/desc").on('value',function(data){
+          vid+="<h3 style=''>"+data.val()+"</h3><br>"
+       })
+       database.ref("Vid"+i+"/image").on('value',function(data){
+          vid+="<img style='margin-top:-10px;border:20px double black;' src='"+data.val()+"'><br>"
+       })
+       
+       database.ref("Vid"+i+"/output").on('value',function(data){
+
+      if(data.val()){
+      vid+="<br><br><br><button style='margin-top:-30px;background:#0da2ff;border:none;padding:5px;padding-right:15px;padding-left:15px;border-radius:25px'><a href='"+data.val()+"'target=blank style='text-decoration:none;color:white;font-weight:700px;font-size:30px;font-family:helevetica;'>See Output</a></button>"
+      }
+      })
+
+       database.ref("Vid"+i+"/url").on('value',function(data){
+
+          if(data.val()){
+          vid+="<br><br><br><button style='margin-top:-30px;background:#0da2ff;border:none;padding:5px;padding-right:15px;padding-left:15px;border-radius:25px'><a href='"+data.val()+"'target=blank style='text-decoration:none;color:white;font-weight:700px;font-size:30px;font-family:helevetica;'>Watch Video</a></button>"
+          }
+       })
+
+       database.ref("Vid"+i+"/source").on('value',function(data){
+          console.log(data.val())
+          if(data.val()){
+             vid+="<br><br><br><button style='margin-top:-30px;background:#0da2ff;border:none;padding:5px;padding-right:15px;padding-left:15px;border-radius:25px'><a href='"+data.val()+"'target=blank style='text-decoration:none;color:white;font-weight:700px;font-size:30px;font-family:helevetica;'>See Source Code</a></button>"
+
+          }
+       })
+
+       document.getElementById("videos").innerHTML+="<div class='video' style=''>"+vid+"</div>"
+       }
+       ,100)
+       setTimeout(function(){
+           clearInterval(int1)
+       }
+       ,4000)
+      function openvd(n)
+      {
+         window.open('video.html?vd='+n)
+      }
+   </script>
+</body>
+</html>
